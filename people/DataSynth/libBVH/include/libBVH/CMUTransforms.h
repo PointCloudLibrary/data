@@ -41,14 +41,16 @@
 #error "Please include BVHTransforms.h before this header"
 #endif
 
+#include <Eigen/Core>
+#include <Eigen/Geometry> // for the transforms and stuff
+
 namespace pcl
 {
   namespace people
   {
     namespace BVH
     {
-      using Eigen::AngleAxisf;
-      using Eigen::Translation3f;
+      using namespace Eigen;
 
       /**
        * \brief applies the stupid scaling factor for the CMU Mocap database.
@@ -99,12 +101,12 @@ namespace pcl
             float theta = atan2(sintheta, costheta);
 
 
-            //			// this will rotate the model in its original pose
-            //			// ( head up Y, Hips facing a vector in X,Z plane )
-            //			// so that it points towards the Z plane
+            // this will rotate the model in its original pose
+            // ( head up Y, Hips facing a vector in X,Z plane )
+            // so that it points towards the Z plane
             // then add "angle" to it
             Transform3 R2(AngleAxisf(-theta+angle,Vec3(0,1,0)));
-            Transform3 S(Eigen::Scaling3f(0.056444));
+            Transform3 S(Eigen::UniformScaling<float>(0.056444f));
             Tis[ji] = R2*S*Tis[ji];
 
             // we do not want to create an offset in the
