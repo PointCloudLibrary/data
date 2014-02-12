@@ -39,68 +39,75 @@
 #include <cstdlib>
 
 pcl::people::datasynth::OpenGLContext::OpenGLContext(const char *displayName):
-mDisplayName(displayName)
+  mDisplayName(displayName)
 {
-	int attrib[] = { GLX_RGBA,
-					GLX_RED_SIZE, 8,
-					GLX_GREEN_SIZE, 8,
-					GLX_BLUE_SIZE, 8,
-					//GLX_DOUBLEBUFFER,
-					GLX_STENCIL_SIZE, 1,
-					GLX_DEPTH_SIZE, 24,
-					None };
+  int attrib[] = { GLX_RGBA,
+                   GLX_RED_SIZE, 8,
+                   GLX_GREEN_SIZE, 8,
+                   GLX_BLUE_SIZE, 8,
+                   //GLX_DOUBLEBUFFER,
+                   GLX_STENCIL_SIZE, 1,
+                   GLX_DEPTH_SIZE, 24,
+                   None
+                 };
 
 
-	// Open the display
-	mDisplay  = XOpenDisplay(displayName);
-	if(!mDisplay)
-		std::cout<<"(ERROR) Could not open display"<<std::endl;
+  // Open the display
+  mDisplay  = XOpenDisplay(displayName);
+  if (!mDisplay)
+  {
+    std::cout << "(ERROR) Could not open display" << std::endl;
+  }
 
-	// Create a Visual
-	mVinfo    = glXChooseVisual(mDisplay, XDefaultScreen(mDisplay), attrib);
-	if(!mVinfo)
-		std::cout<<"(ERROR) Could not define a proper visual"<<std::endl;
+  // Create a Visual
+  mVinfo    = glXChooseVisual(mDisplay, XDefaultScreen(mDisplay), attrib);
+  if (!mVinfo)
+  {
+    std::cout << "(ERROR) Could not define a proper visual" << std::endl;
+  }
 
-	// Create a context
-	mCtx      = glXCreateContext(mDisplay,
-								 mVinfo,
-								 NULL, 	   // Non sharing resources with another context
-								 GL_TRUE); // DRI ON Direct rendering means we are talking directly to the hardware
-										   // and not being forwarded through X
-	if(!mCtx)
-		std::cout<<"(ERROR) Could not create context"<<displayName<<std::endl;
+  // Create a context
+  mCtx      = glXCreateContext(mDisplay,
+                               mVinfo,
+                               NULL,     // Non sharing resources with another context
+                               GL_TRUE); // DRI ON Direct rendering means we are talking directly to the hardware
+  // and not being forwarded through X
+  if (!mCtx)
+  {
+    std::cout << "(ERROR) Could not create context" << displayName << std::endl;
+  }
 
-	// create Pbuffer
-	int nPbufferConfigs = 0;
-	GLXFBConfig * pbufferConfigs = glXGetFBConfigs(mDisplay,XDefaultScreen(mDisplay), &nPbufferConfigs);
-	int pbufferAttrib[] = { GLX_PBUFFER_WIDTH,  64, GLX_PBUFFER_HEIGHT, 64, None};
-	mPBuffer =  glXCreatePbuffer(mDisplay, pbufferConfigs[0], pbufferAttrib);
-	XFree(pbufferConfigs);
+  // create Pbuffer
+  int nPbufferConfigs = 0;
+  GLXFBConfig *pbufferConfigs = glXGetFBConfigs(mDisplay, XDefaultScreen(mDisplay), &nPbufferConfigs);
+  int pbufferAttrib[] = { GLX_PBUFFER_WIDTH,  64, GLX_PBUFFER_HEIGHT, 64, None};
+  mPBuffer =  glXCreatePbuffer(mDisplay, pbufferConfigs[0], pbufferAttrib);
+  XFree(pbufferConfigs);
 
-	// make the context current
-	glXMakeCurrent(mDisplay, mPBuffer, mCtx);
-	//glewInit();
+  // make the context current
+  glXMakeCurrent(mDisplay, mPBuffer, mCtx);
+  //glewInit();
 
-	XSync( mDisplay, False );
+  XSync(mDisplay, False);
 
 }
 
 pcl::people::datasynth::OpenGLContext::~OpenGLContext()
 {
-	glXDestroyPbuffer(mDisplay, mPBuffer);
-	glXDestroyContext(mDisplay, mCtx);
-	XFree(mVinfo);
-	XSetCloseDownMode(mDisplay, DestroyAll);
-	XCloseDisplay(mDisplay);
+  glXDestroyPbuffer(mDisplay, mPBuffer);
+  glXDestroyContext(mDisplay, mCtx);
+  XFree(mVinfo);
+  XSetCloseDownMode(mDisplay, DestroyAll);
+  XCloseDisplay(mDisplay);
 }
 
-const std::string& pcl::people::datasynth::OpenGLContext::getDisplayName()const
+const std::string &pcl::people::datasynth::OpenGLContext::getDisplayName()const
 {
-	return mDisplayName;
+  return mDisplayName;
 }
 
 void pcl::people::datasynth::OpenGLContext::makeCurrent()
 {
-	glXMakeCurrent(mDisplay, mPBuffer, mCtx);
+  glXMakeCurrent(mDisplay, mPBuffer, mCtx);
 }
 

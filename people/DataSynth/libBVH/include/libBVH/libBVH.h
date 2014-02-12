@@ -42,31 +42,32 @@
 
 namespace pcl
 {
-  namespace people
-  {
-    namespace BVH
-    {
-      enum bvhJointType   { BVH_ROOT, BVH_JOINT, BVH_END };
-      enum bvhChannelType { BVH_EMPTY, BVH_XYZ_ZYX, BVH_ZYX };//BVH_ZXY};
-      static const int bvhChannelSize[] =  { 0, 6, 3 };
+namespace people
+{
+namespace BVH
+{
+enum bvhJointType   { BVH_ROOT, BVH_JOINT, BVH_END };
+enum bvhChannelType { BVH_EMPTY, BVH_XYZ_ZYX, BVH_ZYX };//BVH_ZXY};
+static const int bvhChannelSize[] =  { 0, 6, 3 };
 
-      struct bvhJoint {
-          std::string    name;
-          bvhChannelType ctype;
-          float          ox, oy, oz;
-          int            parent;
-      };
+struct bvhJoint
+{
+  std::string    name;
+  bvhChannelType ctype;
+  float          ox, oy, oz;
+  int            parent;
+};
 
-      bool bvhparseFile ( const std::string&                 filename,
-                          std::vector<bvhJoint>&             skel,
-                          float&                             period,
-                          std::vector<std::vector<float> >&  values );
-      /*
+bool bvhparseFile(const std::string                 &filename,
+                  std::vector<bvhJoint>             &skel,
+                  float                             &period,
+                  std::vector<std::vector<float> >  &values);
+/*
 bool bvhwriteHierarchy( const std::string&            filename,
-                        const std::vector<bvhJoint>&  skel );
-       */
+                  const std::vector<bvhJoint>&  skel );
+ */
 
-    } // end namespace BVH
-  } // End namespace people
+} // end namespace BVH
+} // End namespace people
 } // End namespace pcl
 #endif
