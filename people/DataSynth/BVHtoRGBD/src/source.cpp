@@ -37,9 +37,9 @@
 #include <libBVH/BVHMesh.h>
 #include <libBVH/BVHMesh_smooth.h>
 #include <libBVH/BVHMotionFile.h>
+#include <libBVH/CMUTransforms.h>
 
 #include <RGBDRenderer.h>
-#include "../../CMUTransforms/CMUTransforms.h"
 
 #include <OptionParser.h>
 
@@ -49,19 +49,18 @@
 #include <iomanip>
 #include <stdexcept>
 
-//#include <opencv/cv.h>
-//#include <opencv/highgui.h>
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
 // boost random
-#include<boost/random/mersenne_twister.hpp> // the randomness source 
-#include<boost/random/uniform_real.hpp> // the distribution
+#include <boost/random/mersenne_twister.hpp> // the randomness source
+#include <boost/random/uniform_real.hpp> // the distribution
 #include <boost/random/variate_generator.hpp>
 #include <ctime> // for randomness seeding
 
-using namespace BVH;
+using namespace pcl::people::BVH;
+using namespace pcl::people::datasynth;
 
 // #############################
 // Matrix Building and Loading
@@ -211,13 +210,13 @@ int main(int argc, char** argv)
              <<" ended up after "<<frameid<<" samples"<<std::endl; break;}
     // compute transforms
     std::vector<Transform3> Tis;
-    BVH::computeTis( joints_ref, rest_pose, values, Tis );
+    computeTis( joints_ref, rest_pose, values, Tis );
     // rebase the mesh at the origin and scale it to get everything in meters
     double rangle = angle(); //generate a random angle
     CMU_scaleRotateHips(joints_ref, Tis, rangle);
     // accum
     std::vector<Transform3> TTis;
-    BVH::computeTTis( joints_ref, Tis, TTis );
+    computeTTis( joints_ref, Tis, TTis );
 
     // transform mesh
     std::vector<Vec3> X;

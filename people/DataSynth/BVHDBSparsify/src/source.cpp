@@ -36,8 +36,7 @@
 
 #include <libBVH/libBVH.h>
 #include <libBVH/BVHTransforms.h>
-//@todo: delete this "hack"
-#include "../../CMUTransforms/CMUTransforms.h"
+#include <libBVH/CMUTransforms.h>
 
 #include "OptionParser.h"
 
@@ -51,11 +50,11 @@
 
 #define THRESH 0.05 // 5 cm
 
-using namespace BVH;
+using namespace pcl::people::BVH;
 
 /**
  * This function will simply compute the maximal displacement over all the
- * joints between two poses. 
+ * joints between two poses.
  */
 inline float posDist( const std::vector<Vec3>& pos1,
                       const std::vector<Vec3>& pos2 )
@@ -118,16 +117,13 @@ int main(int argc, char** argv)
   std::list<std::vector<Vec3> > samples; // the crazy vector representing the accepted samples
 
   int totalParsedPoses = 0;
-  // 3 - run through the database 
-  for(std::vector<std::string>::const_iterator fname_itr = BVHFiles.begin(); 
-                                    fname_itr != BVHFiles.end(); ++fname_itr )
+  // 3 - run through the database
+  //#pragma omp parallel for
+  for(unsigned int i = 0; i < BVHFiles.size(); i++)
   {
-    std::cout<<"processing frame "<<fname_itr - BVHFiles.begin()
-             <<" / "<<BVHFiles.size()<<" and we have "<<samples.size()
-             <<" elements out of "<<totalParsedPoses;
-    std::cout.flush();
-    std::cout<<"\r";
-
+    std::cout<<"processing frame "<< i
+             <<" / "<< BVHFiles.size() <<" and we have "<< samples.size()
+             <<" elements out of "<< totalParsedPoses << std::endl;
     try {
       std::vector<bvhJoint>             joints;
       float                             period;
@@ -135,40 +131,46 @@ int main(int argc, char** argv)
       std::vector<Transform3>           Tis;
       std::vector<Transform3>           TTis;
       std::vector<Vec3>                 pos(pos_ref);
-      // load the bvh file 
-      bool ret = bvhparseFile(*fname_itr, joints, period, values);
+      // load the bvh file
+      bool ret = bvhparseFile(BVHFiles[i], joints, period, values);
+
       if(!ret) continue;
+
       totalParsedPoses += values.size();
+
       // run through the poses in the bvh file
-      for( std::vector<std::vector<float> >::const_iterator v_itr = values.begin(); 
+      for( std::vector<std::vector<float> >::const_iterator v_itr = values.begin();
                                                       v_itr != values.end(); ++v_itr)
       {
         // compute the transformations
         computeTis( joints_ref, pos_ref, *v_itr, Tis );
 
-        // Reject the non standing poses .... so these that do not 
+        // Reject the non standing poses .... so these that do not
         if( !CMUisStanding(joints_ref,Tis) ) continue ;
 
         // rebase the mesh at the origin
         CMUScaleResetHips(joints_ref, Tis);
         computeTTis( joints, Tis, TTis );
 
-        // compute the associated pose 
+        // compute the associated pose
         for(int ji=0;ji<numJoints;++ji) pos[ji] = TTis[ji] * pos_ref[ji];
         // compare against the accepted samples
         float minDist = std::numeric_limits<float>::max();
-        for( std::list<std::vector<Vec3> >::const_iterator s_itr = samples.begin(); 
+        for( std::list<std::vector<Vec3> >::const_iterator s_itr = samples.begin();
                                                    s_itr != samples.end(); ++s_itr ) {
           float dist = posDist(*s_itr, pos );
           if( dist < minDist ) minDist = dist;
         }
-        // if we are far away enough from all the previous samples, 
+        // if we are far away enough from all the previous samples,
         // add to the samples and write the values to disk
         if(minDist > THRESH) {
-          samples.push_back( pos );
-          for( std::vector<float>::const_iterator itr = v_itr->begin(); 
+          #pragma omp critical(update)
+          {
+            samples.push_back( pos );
+            for( std::vector<float>::const_iterator itr = v_itr->begin();
                               itr != v_itr->end(); ++itr) fout<<*itr<<" ";
-          fout<<"\n";
+            fout<<"\n";
+          }
         }
       }
     } catch( std::exception& err ) { std::cout<<err.what()<<std::endl; }

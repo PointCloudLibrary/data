@@ -40,8 +40,12 @@
 #include <sstream>
 
 
-namespace BVH
+namespace pcl
 {
+  namespace people
+  {
+    namespace BVH
+    {
 
 BVHMotionFile::BVHMotionFile(const std::string& filename)
 {
@@ -97,6 +101,6 @@ bool BVHMotionFile::readNextFrame( const std::vector<bvhJoint>& joints,
 
 
 
-} // end namespace BVH
+} }}// end namespace BVH
 
 

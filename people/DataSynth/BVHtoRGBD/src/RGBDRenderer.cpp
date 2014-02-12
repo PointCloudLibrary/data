@@ -76,7 +76,7 @@ static const char* code_fragment = "\
 	}                                                                 \n\
 ";
 
-RGBDRenderer::RGBDRenderer():
+pcl::people::datasynth::RGBDRenderer::RGBDRenderer():
 mGLContext(":0.0")
 {
 	// ---------------------
@@ -168,7 +168,7 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 	checkGLErrors("RGBDRenderer : end construct");
 }
 
-RGBDRenderer::~RGBDRenderer()
+pcl::people::datasynth::RGBDRenderer::~RGBDRenderer()
 {
 	// ---------------------
 	// texture stuff
@@ -190,7 +190,7 @@ RGBDRenderer::~RGBDRenderer()
 void scaleAndOffsetAndRotate( int     updim, 
                               float   scale,
                               float   noffset,
-                              RGBDRenderer::LabeledVertex* xs )
+                              pcl::people::datasynth::RGBDRenderer::LabeledVertex* xs )
 {
 	int offset = (updim+1)%3;
 	float temp[4][3];
@@ -207,7 +207,7 @@ void scaleAndOffsetAndRotate( int     updim,
 	}
 }
 
-void RGBDRenderer::draw( const float*         GLPMat,
+void pcl::people::datasynth::RGBDRenderer::draw( const float*         GLPMat,
                          const float*         GLMMat,
                          const uint16_t       BackgroundDepth,
                          const int            numVertices,

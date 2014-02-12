@@ -40,8 +40,12 @@
 #include <fstream>
 #include <stdexcept>
 
-namespace BVH
+namespace pcl
 {
+  namespace people
+  {
+    namespace BVH
+    {
 
 
 void loadMesh_Tri( const char*            filename,
@@ -151,6 +155,6 @@ void transformMesh( const std::vector<Transform3>& transforms,
 
 
 
-} // end namespace BVH
+    }}} // end namespace BVH
 
 

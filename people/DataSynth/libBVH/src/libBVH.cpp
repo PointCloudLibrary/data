@@ -45,8 +45,12 @@
 #include <stack>
 
 
-namespace BVH
+namespace pcl
 {
+  namespace people
+  {
+    namespace BVH
+    {
 
 
 std::string bvh_ErrString( const std::string& msg, const std::string filename, int linenr)  {
@@ -339,9 +343,7 @@ bool bvhparseFile ( const std::string&                 filename,
   return true;
 }
 
-
-
-} // end namespace BVH
+} } } // end namespace BVH
 
 
 #undef BVHEXCEPT

@@ -38,7 +38,7 @@
 #include <iostream>
 #include <cstdlib>
 
-OpenGLContext::OpenGLContext(const char *displayName):
+pcl::people::datasynth::OpenGLContext::OpenGLContext(const char *displayName):
 mDisplayName(displayName)
 {
 	int attrib[] = { GLX_RGBA,
@@ -85,7 +85,7 @@ mDisplayName(displayName)
 
 }
 
-OpenGLContext::~OpenGLContext()
+pcl::people::datasynth::OpenGLContext::~OpenGLContext()
 {
 	glXDestroyPbuffer(mDisplay, mPBuffer);
 	glXDestroyContext(mDisplay, mCtx);
@@ -94,12 +94,12 @@ OpenGLContext::~OpenGLContext()
 	XCloseDisplay(mDisplay);
 }
 
-const std::string& OpenGLContext::getDisplayName()const
+const std::string& pcl::people::datasynth::OpenGLContext::getDisplayName()const
 {
 	return mDisplayName;
 }
 
-void OpenGLContext::makeCurrent()
+void pcl::people::datasynth::OpenGLContext::makeCurrent()
 {
 	glXMakeCurrent(mDisplay, mPBuffer, mCtx);
 }

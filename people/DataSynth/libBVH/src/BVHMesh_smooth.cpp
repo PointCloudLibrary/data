@@ -42,8 +42,12 @@
 
 
 
-namespace BVH
+namespace pcl
 {
+  namespace people
+  {
+    namespace BVH
+    {
 
 
 void loadMesh_VJ_smooth( const char*                  filename,
@@ -223,4 +227,4 @@ void duplicateLabelBorders( const std::vector<Vec3>&        X0,
 */
 
 
-} // end namespace BVH
+} }}// end namespace BVH

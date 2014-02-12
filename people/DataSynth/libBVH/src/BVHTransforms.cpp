@@ -36,8 +36,12 @@
 
 #include <libBVH/BVHTransforms.h>
 
-namespace BVH
+namespace pcl
 {
+  namespace people
+  {
+    namespace BVH
+    {
 
 using Eigen::AngleAxisf;
 using Eigen::Translation3f;
@@ -124,4 +128,4 @@ void computeTTis( const std::vector<bvhJoint>&   joints,
 	}
 }
 
-} // end namespace BVH 
+    }}} // end namespace BVH
