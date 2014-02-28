@@ -41,51 +41,52 @@
 
 namespace pcl
 {
-  namespace people
-  {
-    namespace BVH
-    {
-      struct Triangle{
-          int v0, v1, v2;
-      };
+namespace people
+{
+namespace BVH
+{
+struct Triangle
+{
+  int v0, v1, v2;
+};
 
-      /**
-       * \brief just load a triangle list
-       */
-      void loadMesh_Tri( const char*            filename,
-                         std::vector<Triangle>& tris );
+/**
+ * \brief just load a triangle list
+ */
+void loadMesh_Tri(const char            *filename,
+                  std::vector<Triangle> &tris);
 
-      /**
-       * \brief load the vertex-joint associations
-       */
-      void loadMesh_VJ( const char*                  filename,
-                        const std::vector<bvhJoint>& joints,
-                        std::vector<int>&            vjs );
-
-
-      /**
-       * \brief load the vertex labels
-       */
-      void loadMesh_labels( const char*              filename,
-                            std::vector<int>&        labels );
+/**
+ * \brief load the vertex-joint associations
+ */
+void loadMesh_VJ(const char                  *filename,
+                 const std::vector<bvhJoint> &joints,
+                 std::vector<int>            &vjs);
 
 
-      /**
-       * \brief load the vertices rest positions
-       */
-      void loadMesh_Vertices( const char*          filename,
-                              std::vector<Vec3>&   X0 );
+/**
+ * \brief load the vertex labels
+ */
+void loadMesh_labels(const char              *filename,
+                     std::vector<int>        &labels);
 
-      /**
-       * \brief transform the vertices
-       */
-      void transformMesh( const std::vector<Transform3>& transforms,
-                          const std::vector<int>&        VJ,
-                          const std::vector<Vec3>&       X0,
-                          std::vector<Vec3>&             X );
 
-    } // end namespace BVH
-  } // End namespace people
+/**
+ * \brief load the vertices rest positions
+ */
+void loadMesh_Vertices(const char          *filename,
+                       std::vector<Vec3>   &X0);
+
+/**
+ * \brief transform the vertices
+ */
+void transformMesh(const std::vector<Transform3> &transforms,
+                   const std::vector<int>        &VJ,
+                   const std::vector<Vec3>       &X0,
+                   std::vector<Vec3>             &X);
+
+} // end namespace BVH
+} // End namespace people
 } // End namespace pcl
 #endif
 

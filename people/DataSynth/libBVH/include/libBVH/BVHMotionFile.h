@@ -41,26 +41,27 @@
 
 namespace pcl
 {
-  namespace people
-  {
-    namespace BVH
-    {
-      /**
-       * \brief Small helper structure that will read in a huge motion file
-       */
-      class BVHMotionFile {
-        public :
-          BVHMotionFile(const std::string& filename);
-          ~BVHMotionFile();
+namespace people
+{
+namespace BVH
+{
+/**
+ * \brief Small helper structure that will read in a huge motion file
+ */
+class BVHMotionFile
+{
+public :
+  BVHMotionFile(const std::string &filename);
+  ~BVHMotionFile();
 
-          bool readNextFrame( const std::vector<bvhJoint>& joints,
-                              std::vector<float>&          values );
+  bool readNextFrame(const std::vector<bvhJoint> &joints,
+                     std::vector<float>          &values);
 
-        private :
-          void* mPriv;
-      };
-    } // end namespace BVH
-  } // End namespace people
+private :
+  void *mPriv;
+};
+} // end namespace BVH
+} // End namespace people
 } // End namespace pcl
 
 

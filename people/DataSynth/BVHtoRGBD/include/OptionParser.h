@@ -47,60 +47,62 @@
 
 inline std::string buildFilename(const std::string &baseName, int id)
 {
-	char cfilename[1024]; //buffer for the filename
-	sprintf(cfilename, baseName.c_str(), id);
-	return std::string(cfilename);
+  char cfilename[1024]; //buffer for the filename
+  sprintf(cfilename, baseName.c_str(), id);
+  return std::string(cfilename);
 }
 
 inline std::string buildFilename(const std::string &baseName, int id1, int id2)
 {
-	char cfilename[1024]; //buffer for the filename
-	sprintf(cfilename, baseName.c_str(), id1, id2);
-	return std::string(cfilename);
+  char cfilename[1024]; //buffer for the filename
+  sprintf(cfilename, baseName.c_str(), id1, id2);
+  return std::string(cfilename);
 }
 
 inline std::string buildFilename(const std::string &baseName, int id0, int id1, int id2)
 {
-	char cfilename[1024]; //buffer for the filename
-	sprintf(cfilename, baseName.c_str(), id0, id1, id2);
-	return std::string(cfilename);
+  char cfilename[1024]; //buffer for the filename
+  sprintf(cfilename, baseName.c_str(), id0, id1, id2);
+  return std::string(cfilename);
 }
 
 /// current restriction, flags have to be separated from the argument
 class OptionParser
 {
-    public :
-    inline OptionParser(int argc, char**argv);
+public :
+  inline OptionParser(int argc, char **argv);
 
-    template <class T>
-    inline const T getOption(const char *optName);
+  template <class T>
+  inline const T getOption(const char *optName);
 
-    protected :
-    std::vector<std::string > mArgV;
+protected :
+  std::vector<std::string > mArgV;
 };
 
-inline OptionParser::OptionParser(int argc, char**argv)
+inline OptionParser::OptionParser(int argc, char **argv)
 {
-    for(int i=0;i<argc;++i)
-        mArgV.push_back(std::string(argv[i]));
+  for (int i = 0; i < argc; ++i)
+  {
+    mArgV.push_back(std::string(argv[i]));
+  }
 }
 
 template <class T>
 inline const T OptionParser::getOption(const char *optName)
 {
-    T r;
-    for(unsigned int i=0;i<mArgV.size()-1;++i)
+  T r;
+  for (unsigned int i = 0; i < mArgV.size() - 1; ++i)
+  {
+    //size_t pos = mArgV[i].find(optName);
+    //if(pos != std::string::npos)
+    if (mArgV[i].compare(optName) == 0)
     {
-        //size_t pos = mArgV[i].find(optName);
-        //if(pos != std::string::npos)
-        if(mArgV[i].compare(optName) == 0)
-		{
-            std::stringstream ss(mArgV[i+1]);
-            ss >> r;
-            break;
-        }
+      std::stringstream ss(mArgV[i + 1]);
+      ss >> r;
+      break;
     }
-    return r;
+  }
+  return r;
 }
 
 #endif

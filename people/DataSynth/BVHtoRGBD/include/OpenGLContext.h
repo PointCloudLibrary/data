@@ -44,30 +44,30 @@
 
 namespace pcl
 {
-  namespace people
-  {
-    namespace datasynth
-    {
-      class OpenGLContext
-      {
-        public :
-          OpenGLContext(const char *displayName = NULL);
-          ~OpenGLContext();
+namespace people
+{
+namespace datasynth
+{
+class OpenGLContext
+{
+public :
+  OpenGLContext(const char *displayName = NULL);
+  ~OpenGLContext();
 
-          void makeCurrent();
-          const std::string &getDisplayName() const;
+  void makeCurrent();
+  const std::string &getDisplayName() const;
 
-        protected :
-          std::string   mDisplayName;
+protected :
+  std::string   mDisplayName;
 
-          Display*    mDisplay;
-          Colormap    mColormap;
-          XVisualInfo*  mVinfo;
-          GLXContext    mCtx;
-          GLXPbuffer    mPBuffer;
-      };
-    } // End namespace datasynth
-  } // End namespace people
+  Display    *mDisplay;
+  Colormap    mColormap;
+  XVisualInfo  *mVinfo;
+  GLXContext    mCtx;
+  GLXPbuffer    mPBuffer;
+};
+} // End namespace datasynth
+} // End namespace people
 } // End namespace pcl
 
 #endif
